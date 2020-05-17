@@ -1,0 +1,65 @@
+//
+//  main.c
+//  AlgorithmAssignment0513
+//
+//  Created by CelineWang on 2020/05/17.
+//  Copyright © 2020 CelineWang. All rights reserved.
+//
+//完成了穷举出集合内所有子集合的task
+
+#include <stdio.h>
+#include <math.h>
+
+int main() {
+    // insert code here...
+    int i,j;
+    int n,W;
+    int *s;
+    int temp,sum;
+    int flag=0;
+    s=(int *)malloc(sizeof(int));
+    printf("Please input the number of elements:");
+    scanf("%d",&n);
+    printf("Please input the number W:");
+    scanf("%d",&W);
+    printf("Please input %d elements:",n);
+    for (i=0;i<n;i++)
+    {
+        scanf("%d",&s[i]);
+    }
+    while(flag==0)
+    {
+        for(i=0;i<pow(2,n);i++)
+        {
+            temp=i;
+            sum=0;
+            for(j=0;j<n;j++)
+            {
+                if(temp%2)
+                {
+                    sum+=s[j];
+                }
+                temp=temp/2;   //这句不能放在if语句里
+            }
+            if(sum==W)
+            {
+                flag=1;
+                temp=i;
+                printf("{");
+                for(j=0;j<n;j++)
+                {
+                    if(temp%2)
+                    {
+                        printf("%4d",j+1);
+                    }
+                    temp=temp/2;
+                }
+                printf("}\n");
+
+            }
+        }
+        W=W-1;
+        
+    }
+    return 0;
+}
