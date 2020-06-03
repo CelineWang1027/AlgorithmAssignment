@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+int MAX(int a,int b){
+    if(a>b)
+        return a;
+    else
+        return b;
+}
+void procedure(int n,int W)
+{
+    const int MAX_NUM = 100;
+    const int MAX_WEIGHT = 1000;
+    int s[MAX_NUM+1];
+    int M[MAX_NUM+1][MAX_WEIGHT+1];
+    //int *s;
+    //s=(int *)malloc(sizeof(int));
+    printf("Please input %d elements:",n);
+    for (int i=0;i<n;i++)
+    {
+        scanf("%d",&s[i]);
+    }
+    for(int j=0;j<=W;j++)
+    {
+        M[0][j]=0;
+    }
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=0;j<=W;j++)
+        {
+            if(j<s[i])
+                M[i][j]=M[i-1][j];
+            else
+
+                M[i][j]=MAX(M[i-1][j],s[i]+M[i-1][j-s[i]]);
+        }
+    }
+    int j=W;
+    for(int i=n;i>=1;i--)
+    {
+        if(M[i][j]>M[i-1][j])
+        {
+            printf(",%4d\n",i+1);//为什么输出-1了？
+        j=j-s[i];
+        }
+        else
+            continue;
+        }
+    }
+        
+
+
+
+int main() {
+    // insert code here...
+    int n,W;
+
+    //int **M;
+    //M=(int **)malloc(sizeof(int));
+    printf("Please input the number of elements:");
+       scanf("%d",&n);
+       printf("Please input the number W:");
+       scanf("%d",&W);
+    procedure(n,W);
+    return 0;
+    
+}
