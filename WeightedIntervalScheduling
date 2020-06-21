@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define TABSIZE (100)
+
+int n,s[TABSIZE],f[TABSIZE],w[TABSIZE],p[TABSIZE],OPT[TABSIZE];
+
+int max(int x,int y)
+{
+    if(x>=y)
+        return x;
+    else
+        return y;
+}
+
+int binBinaryLast(int *a,int n,int key)
+{
+    int low,high,mid;
+    low=0;
+    high=n-1;
+    while(low<=high)
+    {
+        mid=(low+high)/2;
+        if(a[mid]<=key)
+            low=mid+1;
+        else
+            high=mid-1;
+    }
+    return high;
+}
+
+int main()
+{
+    int i,sum=0;
+    printf("please input sum of interval\n");
+    scanf("%d",&n);
+    printf("pleas input start time, finish time and weight of each interval\n");
+    f[0]=(-999999);
+    for(i=1;i<=n;i++)
+        scanf("%d %d %d",&s[i],&f[i],&w[i]);
+    for (i=2;i<=n;i++)
+    {
+        if(f[i-1]>f[i])
+        {
+            printf("Intervals not ordered by finish time %d\n",__LINE__);
+            exit(0);
+        }
+    }
+    p[0]=0;
+    s[0]=0;
+    f[0]=0;
+    for(i=1;i<=n;i++)
+        p[i]=binBinaryLast(f,i+1,s[i]);
+    OPT[0]=0;
+    for(i=1;i<=n;i++)
+        OPT[i]=max(w[i]+OPT[p[i]],OPT[i-1]);
+    for(i=1;i<=n;i++)
+        printf(" %3d %3d %3d %3d %3d %3d\n",i,s[i],f[i],w[i],p[i],OPT[i]);
+    int k=n;
+    while (k>0) {
+        if(w[k]+OPT[p[k]]>=OPT[k-1])
+        {
+            printf("Include interval %d\n",k);
+            sum+=w[k];
+            k=p[k];
+        }
+        else
+            k--;
+    }
+    printf("Sum of best solution is %d\n",sum);
+}
